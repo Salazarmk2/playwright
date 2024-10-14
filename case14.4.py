@@ -1,4 +1,4 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 import tkinter as tk
 from tkinter import messagebox, Listbox, Frame, scrolledtext, END
 import os
@@ -19,10 +19,10 @@ def run_playwright(email, password, invoice_number):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        
+
         try:
             # Navigate to the login page
-            page.goto("https://login.microsoftonline.com/dayliffCloud.onmicrosoft.com/wsfed?wa=wsignin1.0&wtrealm=https%3a%2f%2fdayliffCloud.onmicrosoft.com%2fbusinesscentral&wreply=https%3a%2f%2fbctest.dayliff.com%2fBC160%2fSignIn%3fReturnUrl%3d%252fBC160%252f")
+            page.goto("https://login.microsoftonline.com/dayliffCloud.onmicrosoft.com/wsfed?wa=wsignin1.0&wtrealm=https%3a%2f%2fdayliffCloud.onmicrosoft.com%2fbusinesscentral&wreply=https%3a%2f%2fbctest.dayliff.com%2fBC160%2f")
 
             # Login steps
             page.get_by_placeholder("someone@example.com").fill(email)
@@ -34,18 +34,23 @@ def run_playwright(email, password, invoice_number):
             page.goto("https://bctest.dayliff.com/BC160/")
             frame = page.frame_locator("iframe[title='Main Content']").first
 
-            # Search for the first invoice number
-            frame.get_by_label("Sales Role Center").click()
+            # **Wait explicitly for "Sales Role Center" to be ready**
+            sales_role_center = frame.get_by_label("Sales Role Center")
+            expect(sales_role_center).to_be_visible()  # Wait for visibility
+            expect(sales_role_center).to_be_enabled()  # Wait for enabled state
+            sales_role_center.click()  # Click after it's ready
+
+            # Navigate to "Posted Documents" and other actions
             frame.get_by_role("menuitem", name="Posted Documents").click()
             frame.get_by_label("Posted Sales Credit Memos,").click()
+
+            # Search for the invoice number
             frame.get_by_text("Search").click()
             frame.get_by_placeholder("Search").fill(invoice_number)
             frame.get_by_role("button", name=f"No., {invoice_number}").click()
 
             # Extract data for the first invoice
-            
-            frame.get_by_label("Total Incl. VAT (UGX),").click
-
+            frame.get_by_role("button", name="Toggle FactBox").click()
             incl_vat1 = frame.get_by_label("Total Incl. VAT (UGX),").text_content()
 
             frame.get_by_label("Invoice No.,").click
@@ -55,15 +60,14 @@ def run_playwright(email, password, invoice_number):
             # Search for the second invoice number
             page.goto("https://bctest.dayliff.com/BC160/?node=0000c51d-c39c-0000-0c41-d500836bd2d2&page=143&company=UGANDA&dc=0&bookmark=23%3bcAAAAAJ7BjIAMwAwADcAMQA3")
             frame.get_by_text("Search").click()
-            frame.get_by_placeholder("Search").fill(invoice2)     
+            frame.get_by_placeholder("Search").fill(invoice2)
             frame.get_by_role("button", name=f"No., {invoice2}").click()
 
             # Extract the Total Incl. VAT for invoice2
             frame.get_by_role("button", name="Toggle FactBox").click()
-            frame.get_by_label("Total Incl. VAT (UGX),").click
             incl_vat2 = frame.get_by_label("Total Incl. VAT (UGX),").text_content()
             take_screenshot(page, f"invoice_{invoice2}")
-            
+
             # Output the two VAT values and comparison result
             if incl_vat1 == incl_vat2:
                 result = (f"Invoice No: {invoice_number}, Total Incl. VAT 1: {incl_vat1}\n"
