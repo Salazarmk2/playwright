@@ -1,0 +1,18 @@
+possible directions:
+1.
+to make it dynamic it requires 3 user input email password and invoice N.O 
+then it needs to be abl to login using those credentials allowing any account to be used
+then uses inputed invoice number to look up posed invoice memo
+needs to be able to pick the first search item of the search result and click it
+needs to read the page source to get the desired item total inc,and posted invoice n.O
+navigate to posted invoice number and send retrieved P.n.o to the search bar and perform the required actions
+print the results and determine the error through logic programmed into the system 
+e.g test for error by checking if numbers match,if they exist,if post exists e.t.c
+
+2.
+use an llm powered by selenium to scrape website according to parameters
+limited information requires further testing if it can navigate through the BC or requires machine learning to make it more dynamic
+though it has worked on simpler structured website bc isnt a simple structured website requiring web crawler to be specialised 
+
+3.
+
