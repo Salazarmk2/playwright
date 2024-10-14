@@ -28,7 +28,7 @@ def test_example(page: Page) -> list:
     if actions % 4 == 0:
         screenshot_paths.append(take_screenshot(page, actions))
 
-    page.get_by_placeholder("someone@example.com").fill("ictqa@dayliff.com")
+    page.get_by_placeholder("someone@example.com").fill("")
     actions += 1
     if actions % 4 == 0:
         screenshot_paths.append(take_screenshot(page, actions))
@@ -38,7 +38,7 @@ def test_example(page: Page) -> list:
     if actions % 4 == 0:
         screenshot_paths.append(take_screenshot(page, actions))
 
-    page.get_by_placeholder("Password").fill("P@s5VV0rD123!")
+    page.get_by_placeholder("Password").fill("")
     actions += 1
     if actions % 4 == 0:
         screenshot_paths.append(take_screenshot(page, actions))
