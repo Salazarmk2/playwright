@@ -15,9 +15,9 @@ def test_example(page: Page) -> None:
         page.goto("https://login.microsoftonline.com/dayliffCloud.onmicrosoft.com/wsfed?wa=wsignin1.0&wtrealm=https%3a%2f%2fdayliffCloud.onmicrosoft.com%2fbusinesscentral&wreply=https%3a%2f%2fbctest.dayliff.com%2fBC160%2fSignIn%3fReturnUrl%3d%252fBC160%252f")
         
         # Sign in
-        page.get_by_placeholder("someone@example.com").fill("ictqa@dayliff.com")
+        page.get_by_placeholder("someone@example.com").fill("")
         page.get_by_role("button", name="Next").click()
-        page.get_by_placeholder("Password").fill("P@s5VV0rD123!")
+        page.get_by_placeholder("Password").fill("")
         page.get_by_role("button", name="Sign in").click()
         page.get_by_role("button", name="Yes").click()
         
