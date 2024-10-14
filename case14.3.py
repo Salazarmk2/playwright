@@ -43,7 +43,7 @@ def run_playwright(email, password, invoice_number):
             frame.get_by_role("button", name=f"No., {invoice_number}").click()
 
             # Extract data for the first invoice
-            frame.get_by_role("button", name="Toggle FactBox").click()
+            
             frame.get_by_label("Total Incl. VAT (UGX),").click
 
             incl_vat1 = frame.get_by_label("Total Incl. VAT (UGX),").text_content()
@@ -55,7 +55,7 @@ def run_playwright(email, password, invoice_number):
             # Search for the second invoice number
             frame.get_by_label("Sales Role Center").click()
             frame.get_by_role("menuitem", name="Posted Documents").click()
-            frame.get_by_label("Posted Sales Invoices, Open").click()
+            page.goto("https://bctest.dayliff.com/BC160/?node=0000c51d-c39c-0000-0c41-d500836bd2d2&page=143&company=UGANDA&dc=0&bookmark=23%3bcAAAAAJ7BjIAMwAwADcAMQA3")
             frame.get_by_text("Search").click()
             frame.get_by_placeholder("Search").fill(invoice2)     
             frame.get_by_role("button", name=f"No., {invoice2}").click()
