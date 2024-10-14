@@ -62,10 +62,10 @@ def run_playwright(email, password, invoice_number):
 
             # Extract the Total Incl. VAT for invoice2
             frame.get_by_role("button", name="Toggle FactBox").click()
-            
+            frame.get_by_label("Total Incl. VAT (UGX),").click
             incl_vat2 = frame.get_by_label("Total Incl. VAT (UGX),").text_content()
             take_screenshot(page, f"invoice_{invoice2}")
-
+            
             # Output the two VAT values and comparison result
             if incl_vat1 == incl_vat2:
                 result = (f"Invoice No: {invoice_number}, Total Incl. VAT 1: {incl_vat1}\n"
